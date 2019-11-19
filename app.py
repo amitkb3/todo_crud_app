@@ -19,10 +19,5 @@ db.create_all()
 
 @app.route('/')
 def index():
-  return render_template('index.html', data=[{
-    'description': 'Todo 1'
-  }, {
-    'description': 'Todo 2'
-  }, {
-    'description': 'Todo 3'
-  }])
+  return render_template('index.html', data=Todo.query.all())
+
