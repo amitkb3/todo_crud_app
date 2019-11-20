@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -17,20 +17,36 @@ class Todo(db.Model):
 
 db.create_all()
 
-# Route listening to route /todos/create which 
-# has information submited via the form
+# # Route listening to route /todos/create which 
+# # has information submited via the form
+
+# @app.route('/todos/create', methods=['POST'])
+# def create_todo():
+#   # reading form data using imported request method in Flask
+#   description = request.form.get('description', '')
+#   # create new record in our todo table
+#   # create todo object
+#   todo = Todo(description=description)
+#   db.session.add(todo)
+#   db.session.commit()
+#   # Render the view with new data
+#   return redirect(url_for('index'))
+
+# AJAX updata TODOs list via json
 
 @app.route('/todos/create', methods=['POST'])
 def create_todo():
-  # reading form data using imported request method in Flask
-  description = request.form.get('description', '')
+  # get_json fetches the body send by fetch method
+  description = request.get_json()['description']
   # create new record in our todo table
   # create todo object
   todo = Todo(description=description)
   db.session.add(todo)
   db.session.commit()
-  # Render the view with new data
-  return redirect(url_for('index'))
+  # Send data via json to be appended to todos list
+  return jsonify({
+   'description' : todo.description
+  })
 
 @app.route('/')
 def index():
