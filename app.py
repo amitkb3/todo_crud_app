@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, abort
 from flask_sqlalchemy import SQLAlchemy
+import sys
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres:postgres@localhost:5432/todoapp'
@@ -36,17 +37,32 @@ db.create_all()
 
 @app.route('/todos/create', methods=['POST'])
 def create_todo():
-  # get_json fetches the body send by fetch method
-  description = request.get_json()['description']
-  # create new record in our todo table
-  # create todo object
-  todo = Todo(description=description)
-  db.session.add(todo)
-  db.session.commit()
-  # Send data via json to be appended to todos list
-  return jsonify({
-   'description' : todo.description
-  })
+  error = False
+  body = {}
+  try:
+    # get_json fetches the body send by fetch method
+    description = request.get_json()['description']
+    # create new record in our todo table
+    # create todo object
+    todo = Todo(description=description)
+    db.session.add(todo)
+    db.session.commit()
+    body['description'] = todo.description
+  except:
+    error = True
+    db.session.rollback()
+    print(sys.exc_info())
+  finally:
+    db.session.close()
+    if error:
+      abort(400)
+    else:
+      # Send data via json to be appended to todos list
+      return jsonify(body)
+      
+
+
+  
 
 @app.route('/')
 def index():
