@@ -3,6 +3,13 @@
     <title>Todo App</title> 
   </head>
   <body>
+    <!-- Form to get user input-->
+    <form method="post" action="/todos/create">
+      <input type="text" name="description" />
+      <input type="submit" value="Create" />
+    </form>
+    
+    <!-- Unordered list to render data read from the database-->
     <ul>
       {% for d in data %}
       <li>{{ d.description }}</li>
