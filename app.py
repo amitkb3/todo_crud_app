@@ -61,6 +61,21 @@ def create_todo():
       # Send data via json to be appended to todos list
       return jsonify(body)
       
+# Route handle for checkbox updates
+@app.route('todos/<todo_id>/set-completed', method=['POST'])
+def set_complete_todo(todo_id):
+  try:
+    # get_json fetches the body send by fetch method
+    completed = request.get_json()['completed']
+    todo = Todo.query.get(todo_id)
+    todo.completed = completed
+    db.session.commit()
+  except:
+    db.session.rollback()
+  finally:
+    db.session.close()
+  return redirect(url_for('index'))
+
 
 
   
