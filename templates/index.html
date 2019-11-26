@@ -5,7 +5,7 @@
       .hidden {
         display: none;
       }
-      
+
       ul {
         list-style: none;
         padding: 0;
@@ -48,8 +48,9 @@
       </li>
       {% endfor %}
     </ul>
-    <!-- AJAX to send data to flask-->
+    
     <script>
+      // AJAX to send data to flask
       document.getElementById('form').onsubmit = function(e) {
         e.preventDefault();
         fetch('/todos/create', {
@@ -66,7 +67,11 @@
         })
         .then(function(jsonResponse) {
           console.log(jsonResponse);
-          const liItem = document.createElement('LI');
+          const liItem = document.createElement('li');
+          const checkbox = document.creatElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.setAttribute('data-id', jsonResponse.id);
+          liItem.appendChild(checkbox);
           liItem.innerHTML = jsonResponse['description'];
           document.getElementById('todos').appendChild(liItem);
           document.getElementById('error').className = 'hidden';
