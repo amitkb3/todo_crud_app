@@ -5,6 +5,12 @@
       .hidden {
         display: none;
       }
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 200px;
+      }
     </style>
   </head>
   <body>
@@ -31,7 +37,14 @@
     <!-- Unordered list to render data read from the database-->
     <ul id="todos">
       {% for d in data %}
-      <li>{{ d.description }}</li>
+      <li>
+        <input class="check-completed" 
+               data-id="{{ d.id }}"
+               type="checkbox"
+               {% if d.completed %} checked {% endif %} 
+        />
+        {{ d.description }}
+      </li>
       {% endfor %}
     </ul>
     <!-- AJAX to send data to flask-->
