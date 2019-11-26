@@ -45,9 +45,11 @@ def create_todo():
     description = request.get_json()['description']
     # create new record in our todo table
     # create todo object
-    todo = Todo(description=description)
+    todo = Todo(description=description, completed=False)
     db.session.add(todo)
     db.session.commit()
+    body['id'] = todo.id
+    body['completed'] = todo.completed
     body['description'] = todo.description
   except:
     error = True
