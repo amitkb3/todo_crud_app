@@ -12,6 +12,20 @@
         margin: 0;
         width: 200px;
       }
+
+      li {
+        clear: both;
+      }
+      li button {
+        -webkit-appearance: none;
+        background: none;
+        border: none;
+        outline: none;
+        color: red;
+        float: right;
+        cursor: pointer;
+        font-size: 20px;
+      }
     </style>
   </head>
   <body>
@@ -45,6 +59,7 @@
                {% if d.completed %} checked {% endif %} 
         />
         {{ d.description }}
+        <button data-id="{{ d.id }}">&cross;</button>
       </li>
       {% endfor %}
     </ul>
