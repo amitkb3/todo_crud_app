@@ -67,6 +67,21 @@
     </ul>
     
     <script>
+      // Send delete request when delete button is clicked
+      const deleteBtns = document.querySelectorAll('.delete-button')
+      for (let i = 0; i < deleteBtns.length; i++) {
+        const btn = deleteBtns[i];
+        btn.onclick = function (e) {
+          const todoId = e.target.dataset['id'];
+          fetch('/todos/' + todoId, {
+            method: 'DELETE'           
+          })
+          .then(function() {
+            const item = e.target.parentElement;
+            item.remove();
+          })
+        }
+      }
       // Send update request when check box is checked or unchecked
       const checkboxes = document.querySelectorAll('.check-completed');
       for (let i = 0; i < checkboxes.length; i++) {
