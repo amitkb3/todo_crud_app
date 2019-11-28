@@ -59,7 +59,9 @@
                {% if d.completed %} checked {% endif %} 
         />
         {{ d.description }}
-        <button data-id="{{ d.id }}">&cross;</button>
+        <button class="delete-button" data-id="{{ d.id }}">
+          &cross;
+        </button>
       </li>
       {% endfor %}
     </ul>
@@ -114,6 +116,13 @@
           liItem.appendChild(checkbox);
           const text = document.createTextNode(' ' + jsonResponse.description);
           liItem.appendChild(text);
+
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'delete-button';
+          deleteBtn.setAttribute('data-id', jsonResponse.id);
+          deleteBtn.innerHTML = '&cross;';
+          liItem.appendChild(deleteBtn);
+
           document.getElementById('todos').appendChild(liItem);
           document.getElementById('error').className = 'hidden';
         })
