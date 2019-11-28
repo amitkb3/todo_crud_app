@@ -64,8 +64,8 @@ def create_todo():
       return jsonify(body)
       
 # Route handler to update on checkbox event
-@app.route('/todos/<todoId>/set-completed', methods=['POST'])
-def set_completed_todo():
+@app.route('/todos/<todo_id>/set-completed', methods=['POST'])
+def set_completed_todo(todo_id):
   try:
     completed = request.get_json()['completed']
     todo = Todo.query.get(todo_id)
