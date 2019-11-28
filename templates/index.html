@@ -50,6 +50,25 @@
     </ul>
     
     <script>
+      // Send update request when check box is checked or unchecked
+      const checkboxes = document.querySelectorAll('.check-completed');
+      for (let i = 0; i < checkboxes.length; i++) {
+        const checkbox = checkboxes[i];
+        checkbox.onchange = function (e) {
+          const newCompleted = e.target.checked;
+          const todoId = e.target.dataset['id'];
+          fetch('/todos/' + todoId + 'set-completed', {
+            method: 'POST',
+            body: JSON.stringify({
+              'completed': newCompleted
+            }),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+        }
+      }
+
       // AJAX to send data to flask
       document.getElementById('form').onsubmit = function(e) {
         e.preventDefault();
