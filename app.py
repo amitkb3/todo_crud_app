@@ -34,7 +34,7 @@ db.create_all()
 #   # Render the view with new data
 #   return redirect(url_for('index'))
 
-# AJAX updata TODOs list via json
+# AJAX update TODOs list via json
 
 @app.route('/todos/create', methods=['POST'])
 def create_todo():
@@ -63,9 +63,20 @@ def create_todo():
       # Send data via json to be appended to todos list
       return jsonify(body)
       
-
-
-  
+# Route handler to update on checkbox event
+@app.route('/todos/<todoId>/set-completed', methods=['POST'])
+def set_completed_todo():
+  try:
+    completed = request.get_json()['completed']
+    todo = Todo.query.get(todo_id)
+    todo.completed = completed
+    db.session.commit()
+  except:
+    db.session.rollback()
+  finally:
+    db.session.close()
+  return redirect(url_for('index'))
+     
 
 @app.route('/')
 def index():
